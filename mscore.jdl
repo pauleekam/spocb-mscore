@@ -1,0 +1,332 @@
+
+
+entity  JournalConnexion {
+    dateConnexion LocalDate,
+    dateDeconnexion LocalDate,
+    heureConnexion String,
+    heureDeconnexion String,
+    user String,
+    typeUser String,
+}
+
+entity  JournalOperation {
+    action LocalDate,
+    input String
+    result String,
+}
+
+
+entity  Calendrier {
+    dateLimiteDepotDossier LocalDate,
+    
+}
+
+entity Phase {
+    libele String required,
+    description String
+}
+
+entity Etape {
+	libele String required,
+    description String
+}
+ 
+entity Session {
+	libelle String required, 
+    description String
+}
+
+
+entity Examen {
+	abreviation String required, 
+    code String required,
+    libelle String required,
+    
+}
+
+entity FraisExamen {
+	fraisExamen Double required, 
+    description String
+}
+
+entity Serie {
+	libelle String required, 
+    description String,
+    aDeuxTours Boolean,
+}
+
+entity NiveauExamen {
+	libelle String required, 
+    description String
+}
+
+entity TypeEnseignement {
+	libelle String required, 
+    description String
+}
+
+entity Matiere {
+	libelle String required, 
+    coeficient Integer required,
+    estEliminatoire Boolean,
+    noteEliminatoire Double,
+    ordreAffichage Integer,
+    phaseMatiere PhaseMatiere
+}
+
+enum PhaseMatiere {
+	ECRIT, PRATIQUE
+}
+
+
+entity Deliberateur {
+	nom String required, 
+}
+
+entity OrdreEnseignement {
+	libelle String required, 
+    description String
+}
+
+entity Region {
+	libelle String required, 
+    code String
+}
+
+entity Departement {
+	libelle String required, 
+    code String
+}
+
+entity GroupeMatiere {
+	libelle String required, 
+    description String,
+    code String
+}
+
+entity Item {
+	libelle String required, 
+    description String
+}
+
+entity Note {
+	note Double required, 
+    mention String
+}
+
+entity CritereDeliberation {
+	libelle String required, 
+    description String
+}
+
+entity JuryCandidature {
+	libelle String required, 
+    code String
+}
+
+entity JuryDeliberation {
+	code String required, 
+}
+entity Contact {
+	telephone String,
+    email String,
+    site String,
+	tweeter String,
+    linkedin String,
+    facebook String,
+    description String,
+    slogan String
+}
+
+entity Etablissement {
+	libelle String required, 
+    code String,
+    etat EtatEtablissement,
+    nomChefEtablissement String,
+    nomEtablissement String,
+}
+
+entity TypeAtelier {
+	libelle String required, 
+    description String
+}
+
+entity SousCentre {
+	libelle String required, 
+    description String,
+    code String
+}
+
+enum EtatEtablissement {
+	EN_REGLE, EN_CONTENTIEUX, PAS_EN_REGLE
+}
+
+enum Incident {
+	FRAUDE, RAS, PAS_EN_REGLE
+}
+
+entity Candidature {
+	codeAnonymat String ,
+    codejury String,
+    codePaiement String,
+    numeroOrdre String,
+    description String,
+    incident Incident,
+    mention Mention,
+    decision Decision,
+    statutEPS StatutEPS,
+    statutCandidat StatutCandidat,
+    decisionAdmissibilite Decision,
+    statutCandidature StatutCandidature, 
+    examenExige Boolean,
+    matriculeExamenExige String,
+    moyenne Double,
+    dateDepotCandidature LocalDate,
+    
+}
+
+
+entity MaterielEtabValue {
+  quantite Double
+}
+
+entity MaterielParam {
+  libele String,
+  description String
+}
+
+entity Requette {
+	libelle String required, 
+    description String
+}
+
+entity Candidat {
+	nomComplet String required, 
+    nomPere String,
+    nomMere String,
+    refActe String,
+    sexe Sexe,
+    dateNaissanceChiffre String,
+    dateNaissanceLettre String,
+    matricule String
+}
+
+entity Contentieux {
+	libelle String required, 
+    description String
+}
+
+entity Handicap {
+	libelle String required, 
+    description String
+}
+
+enum Mention {
+	MAUVAIS, MEDIOCRE, PASSABLE, ASSEZ_BIEN, BIEN, TRES_BIEN, EXECELENT
+}
+
+enum Sexe {
+	MASCULIN, FEMININ
+}
+
+enum Decision {
+	ADMIS, REFUSE
+}
+
+enum StatutEPS {
+	APTE, INAPTE
+}
+
+enum StatutCandidat {
+	LIBRE, REGULIER
+}
+
+entity DeuxiemeLangue {
+	libelle String required, 
+    description String
+}
+
+
+entity TroisiemeLangue {
+	libelle String required, 
+    description String
+}
+
+entity EpreuveFacultative {
+	libelle String required, 
+    description String
+}
+
+
+
+
+
+
+
+
+relationship OneToMany {
+	Candidature to Note{candidature} ,
+    Candidat to Contentieux{candidat},
+    Candidat to Requette{candidat},
+    Session to Contentieux{session},
+    Session to Requette{session},
+    Region to Departement{region},
+    Departement to Etablissement{departement},
+    TroisiemeLangue to Candidature{troisiemeLangue},
+    DeuxiemeLangue to Candidature{DeuxiemeLangue},
+    Candidat to Candidature{candidat},
+    JuryDeliberation to JuryCandidature{juryDeliberation},
+    SousCentre to JuryCandidature{sousCentre},
+
+    OrdreEnseignement to Etablissement{ordreEnseignement},
+    Matiere to Note{matiere},
+    Serie to Matiere{serie},
+    NiveauExamen to Examen{niveauExamen},
+    Examen to Serie{examen},
+    Examen to FraisExamen{examen},
+    Examen to Phase{examen},
+    Phase to Etape{phase},
+    GroupeMatiere to Matiere{groupeMatiere},
+    Session to Calendrier{session},
+    Candidature to Note{candidature},
+    Calendrier to Phase{caleendrier},
+    CritereDeliberation to Item{critereDeliberation},
+    JuryCandidature to Candidature{juryCandidature},
+    SousCentre to Candidature{sousCentre},
+    TypeEnseignement to Etablissement{typeEnseignement},
+    TypeEnseignement to Examen{typeEnseignement},
+    Session to Etablissement{session},
+    Serie to Candidature{serie},
+    Serie to Etape{serie},
+    FraisExamen to Candidature{fraisExamen},
+    Etablissement to MaterielEtabValue{etablissement},
+    MaterielParam to MaterielEtabValue{materielParam}
+}
+relationship ManyToMany {
+	 Candidature{epreuveFacultative(code)} to EpreuveFacultative{candidature(matricule)} ,
+     Candidat{listHandicap(libelle)} to Handicap,
+     Deliberateur to JuryDeliberation,
+     Etablissement to TypeAtelier
+}
+
+relationship OneToOne {
+	Candidat to Contact,
+    Deliberateur to Contact,
+    Etablissement to Contact,
+    SousCentre to Etablissement,
+    Calendrier to Examen,
+    Etape to FraisExamen,
+    Item to Matiere,
+    Item to GroupeMatiere
+}
+
+paginate all with pagination
+
+// Use Data Transfert Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl 
+
+// set filter
+filter *
